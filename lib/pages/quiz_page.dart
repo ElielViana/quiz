@@ -15,6 +15,8 @@ class _QuizPageState extends State<QuizPage> {
   int pos = 0;
   int acertos = 0;
   int erros = 0;
+  List<Widget> iconsList = [];
+  late QuizModel quiz;
 
   final Widget done = const SizedBox(
     child: Icon(Icons.done, color: Colors.green),
@@ -56,9 +58,8 @@ class _QuizPageState extends State<QuizPage> {
     textoPergunta: "O Brasil nunca ficou fora de uma copa do mundo",
     resposta: true,
   );
-  List<Widget> iconsList = [];
+  //fim-perguntas
 
-  late QuizModel quiz;
   @override
   void initState() {
     quiz = QuizModel();
@@ -72,6 +73,7 @@ class _QuizPageState extends State<QuizPage> {
   }
 
   Pergunta perguntaAtual() {
+    //retorna o Objeto Pergunta
     quiz.setIndice(pos);
     int length = quiz.getPergunta().length;
     if (pos < length) {
@@ -90,15 +92,14 @@ class _QuizPageState extends State<QuizPage> {
   }
 
   bool verificaResposta(bool value) {
+    //verifica se a resposta está correta e adiciona icone a lista de Widgets
     if (value == quiz.getPergunta()[quiz.getIndice()].resposta) {
-      debugPrint("Acertou a resposta");
       iconsList.add(SizedBox(
         child: done,
         width: 25,
       ));
       acertos++;
     } else {
-      debugPrint("Errou a resposta");
       iconsList.add(SizedBox(
         child: close,
         width: 25,
@@ -110,6 +111,7 @@ class _QuizPageState extends State<QuizPage> {
   }
 
   _onBasicWaitingAlertPressed(context) async {
+    //Retorna o Alert da lib rflutter_alert com a quantidade de erros e acertos
     await Alert(
       context: context,
       title: "Resultado",
@@ -148,11 +150,8 @@ class _QuizPageState extends State<QuizPage> {
                 onPressed: () {
                   setState(() {
                     pos++;
-                    debugPrint(pos.toString());
                     verificaResposta(true);
                     perguntaAtual();
-
-                    debugPrint("Tamanho: " + iconsList.length.toString());
                   });
                 },
                 child: const Text(
@@ -171,7 +170,6 @@ class _QuizPageState extends State<QuizPage> {
             onPressed: () {
               setState(() {
                 pos++;
-                debugPrint(pos.toString());
                 verificaResposta(false);
                 perguntaAtual();
               });
